@@ -22,19 +22,26 @@ module tb ();
     wire [7:0] uio_out;
     wire [7:0] uio_oe;
 
+    // ==========================================
+    // AJOUTE CES DEUX LIGNES ICI :
+    // ==========================================
+    wire VPWR = 1'b1;
+    wire VGND = 1'b0;
+
     // Instanciation de votre circuit
     tt_um_deterministe_MariusL00 user_project (
-    `ifdef GL_TEST
-            .VPWR(1'b1),
-            .VGND(1'b0),
-    `endif
-            .ui_in  (ui_in),
-            .uo_out (uo_out),
-            .uio_in (uio_in),
-            .uio_out(uio_out),
-            .uio_oe (uio_oe),
-            .ena    (ena),
-            .clk    (clk),
-            .rst_n  (rst_n)
-        );
+        .ui_in  (ui_in),
+        .uo_out (uo_out),
+        .uio_in (uio_in),
+        .uio_out(uio_out),
+        .uio_oe (uio_oe),
+        .ena    (ena),
+        .clk    (clk),
+        .rst_n  (rst_n)
+`ifdef USE_POWER_PINS
+        ,
+        .VPWR(VPWR),  // Le port bidirectionnel est maintenant relié au "wire"
+        .VGND(VGND)   // Le port bidirectionnel est maintenant relié au "wire"
+`endif
+    );
 endmodule
